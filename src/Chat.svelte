@@ -7,7 +7,8 @@
 
   import GUN from 'gun';
   const db = GUN();
-
+  const error = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCGwtHtu69hARIqVO1/MfsFBwzrnJjVlOgkIf9vhQZQ7RufojKi5jyYQkkELjHDWId47OiFq1Gdb9AELm+mk2LvG37CFkQsa9KNDliBInNsyhNUlSWWpkBoJLGuiql13qSz4Ym6MLnj1SCfZYVxTTb5NlJWLXh5T9Z5veJC3Nm3VQIDAQAB';
+  
   let newMessage;
   let messages = [];
 
@@ -39,17 +40,16 @@
     };
 
     // Get Messages
-    db.get('vfchat')
+    db.get('VFchat2022')
       .map(match)
       .once(async (data, id) => {
         if (data) {
           // Key for end-to-end encryption
-          const key = '#foo';
 
           var message = {
             // transform the data
             who: await db.user(data).get('alias'), // a user might lie who they are! So let the user system detect whose data it is.
-            what: (await SEA.decrypt(data.what, key)) + '', // force decrypt as text.
+            what: (await SEA.decrypt(data.what, error)) + '', // force decrypt as text.
             when: GUN.state.is(data, 'what'), // get the internal timestamp for the what property.
           };
 
@@ -66,10 +66,10 @@
   });
 
   async function sendMessage() {
-    const secret = await SEA.encrypt(newMessage, '#foo');
+    const secret = await SEA.encrypt(newMessage, error);
     const message = user.get('all').set({ what: secret });
     const index = new Date().toISOString();
-    db.get('vfchat').get(index).put(message);
+    db.get('VFchat2022').get(index).put(message);
     newMessage = '';
     canAutoScroll = true;
     autoScroll();
