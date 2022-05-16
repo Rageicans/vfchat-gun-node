@@ -20,6 +20,6 @@
 
     {:else}
 
-      <h3>Fam Chat</h3>
+      <div id="demotext">Fam Chat</div>
   {/if}
 </header>
